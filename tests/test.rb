@@ -16,8 +16,8 @@ class JiraUserPainTest < Test::Unit::TestCase
   end
 
   def test_dashboard_single_ticket_json
-    get '/dashboard.json', :team => 'single'
-    json = { :tickets => [{:id => 1, :pain => '10', :summary=>'First ticket with pain of ten'}]}.to_json
+    get '/dashboard.json', :project => 'single_ticket'
+    json = { :tickets => [{:id => 1, :pain => 10, :summary=>'First ticket with pain of ten'}]}.to_json
     assert_equal(json, last_response.body)
   end
 
