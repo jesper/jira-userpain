@@ -1,5 +1,8 @@
 A Ruby Sinatra powered User-Pain dashboard for use with Jira.
 
+To configure:
+Set up the following environmental variables: JIRA_USERNAME JIRA_PASSWORD JIRA_HOSTNAME JIRA_PORT
+
 To launch:
 rackup -p 80
 
