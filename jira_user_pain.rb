@@ -10,6 +10,6 @@ class JiraUserPain < Sinatra::Base
     "Hello World"
   end
 
-  run! if app_file == $0
+  run! if __FILE__ == $0
 end
 

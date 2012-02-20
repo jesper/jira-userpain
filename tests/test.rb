@@ -1,4 +1,5 @@
-require './app'
+require './jira_user_pain'
+gem 'test-unit'
 require 'test/unit'
 require 'rack/test'
 
