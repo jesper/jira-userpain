@@ -1,12 +1,10 @@
 A Ruby Sinatra powered User-Pain dashboard for use with Jira.
 
 To configure:
-Set up the following environmental variables: JIRA_USERNAME JIRA_PASSWORD JIRA_HOSTNAME JIRA_PORT
+* Set up the following environmental variables: JIRA_USERNAME JIRA_PASSWORD JIRA_HOSTNAME JIRA_PORT
+* Edit $TYPE and $LIKELIHOOD in helpers.rb to reflect your custom fields names
 
 To launch:
 rackup -p 80
-
-To run tests:
-ruby tests/test.rb
 
 Detailed information about User-Pain: http://www.lostgarden.com/2008/05/improving-bug-triage-with-user-pain.html
