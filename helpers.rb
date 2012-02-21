@@ -2,44 +2,42 @@ require 'rubygems'
 
 require 'net/http'
 require 'json'
+require 'nokogiri'
 
-require './lib/map'
 require './lib/assert'
-require './lib/issue'
 
-# Map user-pain field name to what the field is called in your instance of Jira. Map is declared in lib/map.rb.
-$mapping = {'likelihood' => Map.new('Likelihood'), 'type' => Map.new('Classification'), 'priorty' => Map.new('Priority')}
+$LIKELIHOOD = 'Likelihood'
+$TYPE = 'Classification'
 
-def get_value(field_name, data)
-  if field_name == 'priority'
-    return data['priority']['value']['name'] 
+def get_issues_for_project(project)
+  issues_xml = search_for_issues(project)
+  issues = Array.new
+
+  issue_xpath = Nokogiri::XML(issues_xml).xpath('//rss/channel/item')
+
+  for issue in issue_xpath
+    id = issue.xpath('key').text
+    assignee = issue.xpath('assignee').attribute('username').text
+    priority = issue.xpath('priority').text
+    likelihood = issue.xpath('customfields/customfield[customfieldname = "Likelihood"]/customfieldvalues/customfieldvalue').text
+    type = issue.xpath('customfields/customfield[customfieldname = "Classification"]/customfieldvalues/customfieldvalue').text
+    summary = issue.xpath('summary').text
+    issues.push({:id => id, :assignee => assignee, :priority => priority, :likelihood => likelihood, :type => type, :summary => summary})
   end
 
-  if !$mapping[field_name].jira_custom_field
-    $mapping[field_name].jira_custom_field = data.keys.select{ |k| data[k]['name'] == $mapping[field_name].jira_name }.first
-  end
-
-  assert(!data[$mapping[field_name].jira_custom_field]['value'].nil?, "#{field_name} field value not found in data")
-
-  return data[$mapping[field_name].jira_custom_field]['value']['value']
+  return issues
 end
 
-def get_issue(issue)
-  req = Net::HTTP::Get.new('/rest/api/latest/issue/' + issue + '.json')
+def search_for_issues(project)
+  req = Net::HTTP::Get.new(URI.escape('/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?field=key&field=summary&field=assignee&field=priority&field=allcustom&jqlQuery=' + $LIKELIHOOD + ' != EMPTY AND ' + $TYPE + ' != EMPTY AND priority != EMPTY AND status != closed AND type = bug AND project=' + project))
   req.basic_auth(ENV['JIRA_USERNAME'], ENV['JIRA_PASSWORD'])
-
   response = Net::HTTP.new(ENV['JIRA_HOSTNAME'], ENV['JIRA_PORT']).request(req)
 
   if response.code =~ /20[0-9]{1}/
-    json = JSON.parse(response.body)
-    data = json['fields']
-    return Issue.new(issue,
-                     data['assignee']['value']['name'],
-                     get_value('priority', data),
-                     get_value('likelihood', data),
-                     get_value('type', data),
-                     data['summary']['value'])
+#TBD handle invalid xml properly
+    return response.body
   else
+#TBD Add more graceful error handling
     raise StandardError, "Unsuccessful response code " + response.code + " for issue " + issue
   end
 end
