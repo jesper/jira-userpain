@@ -7,11 +7,12 @@ require './helpers'
 class JiraUserPain < Sinatra::Base
 
   get "/" do
-    "Hello World"
+    "Jira UserPain dashboard. Call /dashboard.json/$project"
   end
 
-  get '/dashboard.json[?|/]:project' do
+  get '/dashboard.json/:project/?:threshold?' do
     content_type :json
+    params['threshold'] ||= $USERPAIN_THRESHOLD
     get_issues_for_project(params['project']).to_json
   end
 
