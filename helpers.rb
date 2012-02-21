@@ -6,10 +6,6 @@ require 'nokogiri'
 
 require './lib/assert'
 
-$LIKELIHOOD = 'Likelihood'
-$TYPE = 'Classification'
-$USERPAIN_THRESHOLD = 30
-
 def get_issues_for_project(project)
   issues_xml = search_for_issues(project)
   issues = Array.new
