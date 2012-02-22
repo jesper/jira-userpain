@@ -23,7 +23,7 @@ def type_to_value(type)
     when /Documentation/
       return 1
     else
-      assert(false, "Invalid likelihood #{likelihood} given to likelihood_to_value")
+      assert(false, "Invalid type #{type} given to type_to_value")
   end
 end
 
