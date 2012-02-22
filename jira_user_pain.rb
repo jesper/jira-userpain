@@ -7,7 +7,7 @@ require './helpers'
 class JiraUserPain < Sinatra::Base
 
   get '/' do
-    'Jira UserPain dashboard. Call /dashboard.json/$project'
+    'Jira UserPain dashboard. Call /dashboard/$project'
   end
 
   get '/dashboard/:project/?:threshold?' do
