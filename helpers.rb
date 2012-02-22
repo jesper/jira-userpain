@@ -101,6 +101,6 @@ def search_for_issues(project)
     return response.body
   else
 #TBD Add more graceful error handling
-    raise StandardError, "Unsuccessful response code " + response.code + " for issue " + issue
+    raise StandardError, "Unsuccessful response code " + response.code + " for project " + project
   end
 end
