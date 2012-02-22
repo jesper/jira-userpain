@@ -66,6 +66,8 @@ def get_user_pain_score(priority, likelihood, type)
 end
 
 def get_issues_for_project(project, threshold)
+  threshold ||= $USERPAIN_THRESHOLD
+
   issues_xml = search_for_issues(project)
 
   issues = Array.new
@@ -88,7 +90,7 @@ def get_issues_for_project(project, threshold)
     issues.push({:id => id, :assignee => assignee, :userpain => score, :summary => summary})
   end
 
-  return {:issues => issues}
+  return issues
 end
 
 def search_for_issues(project)

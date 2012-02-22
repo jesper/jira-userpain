@@ -1,0 +1,7 @@
+%script(src="/js/prototype.js")
+%script(src="/js/table_orderer-min.js")
+%link{'rel' => 'stylesheet', 'href' => '/css/tableorderer.css', 'type' => 'text/css'}
+
+#container
+:javascript
+  new TableOrderer('container',{url : '/dashboard.json/#{params['project']}/#{params['threshold']}'});
