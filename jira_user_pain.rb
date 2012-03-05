@@ -9,19 +9,19 @@ class JiraUserPain < Sinatra::Base
   set :public, 'public'
 
   get '/' do
-    'Jira UserPain dashboard. Call /dashboard/$project'
+    'Jira UserPain dashboard. Call /$project'
   end
 
-  get '/dashboard/:project/?:threshold?' do
+  get '/:project/?:threshold?' do
     haml :dashboard
   end
 
-  get '/dashboard.json/:project/?:threshold?' do
+  get '/json/:project/?:threshold?' do
     content_type :json
     get_issues_for_project(params['project'], params['threshold']).to_json
   end
 
-  post '/dashboard.json/:project/?:threshold?' do
+  post '/json/:project/?:threshold?' do
     content_type :json
     get_issues_for_project(params['project'], params['threshold']).to_json
   end
