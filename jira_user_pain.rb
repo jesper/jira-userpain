@@ -12,10 +12,6 @@ class JiraUserPain < Sinatra::Base
     'Jira UserPain dashboard. Call /$project'
   end
 
-  get '/:project/?:threshold?' do
-    haml :dashboard
-  end
-
   get '/json/:project/?:threshold?' do
     content_type :json
     get_issues_for_project(params['project'], params['threshold']).to_json
@@ -25,6 +21,11 @@ class JiraUserPain < Sinatra::Base
     content_type :json
     get_issues_for_project(params['project'], params['threshold']).to_json
   end
+
+  get '/:project/?:threshold?' do
+    haml :dashboard
+  end
+
 
   run! if __FILE__ == $0
 end
