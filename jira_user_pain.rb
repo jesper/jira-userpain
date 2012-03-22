@@ -6,7 +6,7 @@ require './helpers'
 
 class JiraUserPain < Sinatra::Base
   set :static, true
-  set :public, 'public'
+  set :public_folder, 'public'
 
   get '/' do
     'Jira UserPain dashboard. Call /$project'
